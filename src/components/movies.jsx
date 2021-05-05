@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import paginate from "../utils/paginate";
 import Like from "./common/like";
 import ListGroup from "./common/listGroup";
@@ -11,14 +11,14 @@ class Movies extends Component {
     movies: getMovies(),
     pageSize: 4,
     currentPage: 1,
-    genres: getGenres(),
+    genres: [],
     currentGenre: "",
   };
 
   componentDidMount() {
-    this.setState({ movies: getMovies(), genres: getGenres() });
+    const genres = [{ name: "All Genres" }, ...getGenres()];
+    this.setState({ genres: genres });
   }
-  
 
   handleLike = (movie) => {
     const movies = [...this.state.movies];
@@ -37,30 +37,38 @@ class Movies extends Component {
   };
 
   handleGenre = (genre) => {
-    const movies = this.state.movies.filter((m) => m.genre._id === genre._id);
-    this.setState({ currentGenre: genre, movies });
+    this.setState({ currentGenre: genre, currentPage: 1 });
   };
 
   render() {
     const { length: count } = this.state.movies;
-    const { pageSize, currentPage, movies: allMovies } = this.state;
+    const {
+      pageSize,
+      currentPage,
+      currentGenre,
+      movies: allMovies,
+    } = this.state;
 
     if (count < 1) {
       return <p>There Are No Movies In The Database</p>;
     }
-
-    const movies = paginate(allMovies, currentPage, pageSize);
+    const filtered =
+      currentGenre && currentGenre._id
+        ? allMovies.filter((m) => m.genre._id === currentGenre._id)
+        : allMovies;
+    const movies = paginate(filtered, currentPage, pageSize);
 
     return (
       <div className="row">
         <div className="col-md-3">
           <ListGroup
             genres={this.state.genres}
+            currentGenre={this.state.currentGenre}
             handleGenre={this.handleGenre}
           />
         </div>
         <div className="col-md-9">
-          <p>Showing {count} Movies From Database </p>
+          <p>Showing {filtered.length} Movies From Database </p>
           <table className="table">
             <thead>
               <tr>
@@ -101,7 +109,7 @@ class Movies extends Component {
           </table>
           <Pagination
             pageSize={pageSize}
-            itemsCount={count}
+            itemsCount={filtered.length}
             pageChange={this.handlePageChange}
             currentPage={currentPage}
           />
