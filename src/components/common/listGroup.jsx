@@ -1,13 +1,12 @@
 import React from "react";
 
-const ListGroup = (props) => {
-  const {
-    genres,
-    handleGenre,
-    valueProperty,
-    textProperty,
-    currentGenre,
-  } = props;
+const ListGroup = ({
+  genres,
+  handleGenre,
+  valueProperty,
+  textProperty,
+  currentGenre,
+}) => {
   return (
     <ul className="list-group" style={{ cursor: "pointer" }}>
       {genres.map((genre) => (

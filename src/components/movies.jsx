@@ -46,8 +46,7 @@ class Movies extends Component {
     this.setState({ sortColumn: sortColumn });
   };
 
-  render() {
-    const { length: count } = this.state.movies;
+  getPageData = () => {
     const {
       pageSize,
       currentPage,
@@ -56,9 +55,6 @@ class Movies extends Component {
       movies: allMovies,
     } = this.state;
 
-    if (count < 1) {
-      return <p>There Are No Movies In The Database</p>;
-    }
     const filtered =
       currentGenre && currentGenre._id
         ? allMovies.filter((m) => m.genre._id === currentGenre._id)
@@ -67,6 +63,18 @@ class Movies extends Component {
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
     const movies = paginate(sorted, currentPage, pageSize);
+    return { totalCount: filtered.length, movies };
+  };
+
+  render() {
+    const { length: count } = this.state.movies;
+    const { pageSize, currentPage, sortColumn } = this.state;
+
+    if (count < 1) {
+      return <p>There Are No Movies In The Database</p>;
+    }
+
+    const { totalCount, movies } = this.getPageData();
 
     return (
       <div className="row">
@@ -78,7 +86,7 @@ class Movies extends Component {
           />
         </div>
         <div className="col-md-9">
-          <p>Showing {filtered.length} Movies From Database </p>
+          <p>Showing {totalCount} Movies From Database </p>
           <MoviesTable
             movies={movies}
             handleLike={this.handleLike}
@@ -88,7 +96,7 @@ class Movies extends Component {
           />
           <Pagination
             pageSize={pageSize}
-            itemsCount={filtered.length}
+            itemsCount={totalCount}
             pageChange={this.handlePageChange}
             currentPage={currentPage}
           />
