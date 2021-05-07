@@ -2,16 +2,26 @@ import React, { Component } from "react";
 import Like from "./common/like";
 
 class MoviesTable extends Component {
+  raiseSort = (path) => {
+    const sortColumn = { ...this.props.sortColumn };
+    if (sortColumn.path === path) {
+      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
+    } else {
+      sortColumn.order = "asc";
+      sortColumn.path = path;
+    }
+    this.props.handleSort(sortColumn)
+  };
   render() {
-    const { movies, handleLike, handleDelete, handleSort } = this.props;
+    const { movies, handleLike, handleDelete } = this.props;
     return (
       <table className="table">
-        <thead style={{cursor:"pointer"}} >
+        <thead style={{ cursor: "pointer" }}>
           <tr>
-            <th onClick={() => handleSort("title")}>Title</th>
-            <th onClick={() => handleSort("genre.name")}>Genre</th>
-            <th onClick={() => handleSort("numberInStock")}>Stock</th>
-            <th onClick={() => handleSort("dailyRentalRate")}>Rate</th>
+            <th onClick={() => this.raiseSort("title")}>Title</th>
+            <th onClick={() => this.raiseSort("genre.name")}>Genre</th>
+            <th onClick={() => this.raiseSort("numberInStock")}>Stock</th>
+            <th onClick={() => this.raiseSort("dailyRentalRate")}>Rate</th>
             <th></th>
             <th></th>
           </tr>

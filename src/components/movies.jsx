@@ -14,11 +14,11 @@ class Movies extends Component {
     currentPage: 1,
     genres: [],
     currentGenre: "",
-    sortColumn: {path: "title", order: "asc"}
+    sortColumn: { path: "title", order: "asc" },
   };
 
   componentDidMount() {
-    const genres = [{_id: "", name: "All Genres" }, ...getGenres()];
+    const genres = [{ _id: "", name: "All Genres" }, ...getGenres()];
     this.setState({ genres: genres });
   }
 
@@ -42,8 +42,8 @@ class Movies extends Component {
     this.setState({ currentGenre: genre, currentPage: 1 });
   };
 
-  handleSort = (path) => {
-    this.setState({sortColumn: {path:path, order: "asc"}})
+  handleSort = (sortColumn) => {
+    this.setState({ sortColumn: sortColumn });
   };
 
   render() {
@@ -64,7 +64,7 @@ class Movies extends Component {
         ? allMovies.filter((m) => m.genre._id === currentGenre._id)
         : allMovies;
 
-    const sorted = _.orderBy(filtered,[sortColumn.path], [sortColumn.order])
+    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
     const movies = paginate(sorted, currentPage, pageSize);
 
@@ -84,6 +84,7 @@ class Movies extends Component {
             handleLike={this.handleLike}
             handleDelete={this.handleDelete}
             handleSort={this.handleSort}
+            sortColumn={sortColumn}
           />
           <Pagination
             pageSize={pageSize}
