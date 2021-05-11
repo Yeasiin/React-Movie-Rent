@@ -11,9 +11,7 @@ class TableBody extends Component {
           return (
             <tr key={item._id}>
               <td>
-                <Link to={{ pathname: `/movies/${item._id}` }}>
-                  {item.title}
-                </Link>
+                <Link to={`/movies/${item._id}`}>{item.title}</Link>
               </td>
               <td>{item.genre.name}</td>
               <td>{item.numberInStock}</td>
