@@ -1,30 +1,31 @@
 import React, { Component } from "react";
+import Joi from "joi-browser";
+import Form from "./common/from";
 
-class LoginForm extends Component {
+class LoginForm extends Form {
   state = {
-    account: {
+    data: {
       username: "",
       password: "",
     },
-  };
-  username = React.createRef();
-  password = React.createRef();
-
-  handleEvent = (e) => {
-    e.preventDefault();
+    errors: {},
   };
 
-  handleChange = ({ currentTarget: input }) => {
-    const account = { ...this.state.account };
-    account[input.name] = input.value;
-    this.setState({ account });
+  schema = {
+    username: Joi.string().required().label("Username"),
+    password: Joi.string().required().label("Password"),
+  };
+
+  doSubmit = () => {
+    console.log("Submitted");
   };
 
   render() {
     return (
       <div className="row">
         <div className="col-md-8 offset-2 ">
-          <form onSubmit={this.handleEvent}>
+          <h2>Login</h2>
+          <form onSubmit={this.handleSubmit}>
             <div className="form-group">
               <label htmlFor="username">Username</label>
               <input
@@ -35,6 +36,11 @@ class LoginForm extends Component {
                 id="username"
                 name="username"
               />
+              {this.state.errors.username && (
+                <div className="alert alert-danger">
+                  {this.state.errors.username}
+                </div>
+              )}
             </div>
             <div className="form-group">
               <label htmlFor="password">Password</label>
@@ -46,8 +52,18 @@ class LoginForm extends Component {
                 id="password"
                 name="password"
               />
+              {}
+              {this.state.errors.password && (
+                <div className="alert alert-danger">
+                  {this.state.errors.password}
+                </div>
+              )}
             </div>
-            <button type="submit" className="btn btn-primary">
+            <button
+              disabled={this.validate()}
+              type="submit"
+              className="btn btn-primary"
+            >
               Login
             </button>
           </form>
