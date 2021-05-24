@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
+import Input from "./input";
+import Select from "./dropDown";
 
 class Form extends Component {
   state = { data: {}, errors: {} };
@@ -44,6 +46,46 @@ class Form extends Component {
     this.setState({ errors: errors || {} });
     if (errors) return;
     this.doSubmit();
+  };
+
+  renderButton = (label) => {
+    return (
+      <button
+        disabled={this.validate()}
+        type="submit"
+        className="btn btn-primary"
+      >
+        {label}
+      </button>
+    );
+  };
+
+  renderInput = (name, label, type = "text") => {
+    return (
+      <Input
+        handleChange={this.handleChange}
+        errors={this.state.errors[name]}
+        value={this.state.data[name]}
+        type={type}
+        name={name}
+        label={label}
+      />
+    );
+  };
+
+  renderSelect = (name, label, genres) => {
+    const { data, errors } = this.state;
+
+    return (
+      <Select
+      name={name}
+      value={data[name]}
+      label={label}
+      genres={genres}
+      errors={errors[name]}
+      handleChange={this.handleChange}
+      />
+    );
   };
 }
 
