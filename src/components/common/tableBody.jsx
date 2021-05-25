@@ -4,7 +4,7 @@ import Like from "./like";
 
 class TableBody extends Component {
   render() {
-    const { data, handleLike, handleDelete } = this.props;
+    const { data, handleLike, handleDelete, user } = this.props;
     return (
       <tbody>
         {data.map((item) => {
@@ -20,14 +20,16 @@ class TableBody extends Component {
                 <Like like={item.liked} toggleLike={() => handleLike(item)} />
               </td>
               <td>
-                <button
-                  className="btn btn-danger btn-sm"
-                  onClick={() => {
-                    handleDelete(item);
-                  }}
-                >
-                  Delete
-                </button>
+                {user && (
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => {
+                      handleDelete(item);
+                    }}
+                  >
+                    Delete
+                  </button>
+                )}
               </td>
             </tr>
           );

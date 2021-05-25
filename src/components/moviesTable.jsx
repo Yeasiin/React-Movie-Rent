@@ -11,13 +11,8 @@ class MoviesTable extends Component {
     { key: "delete" },
   ];
   render() {
-    const {
-      movies,
-      handleLike,
-      handleDelete,
-      sortColumn,
-      handleSort,
-    } = this.props;
+    const { movies, handleLike, handleDelete, sortColumn, handleSort, user } =
+      this.props;
     return (
       <Table
         columns={this.columns}
@@ -26,6 +21,7 @@ class MoviesTable extends Component {
         handleDelete={handleDelete}
         sortColumn={sortColumn}
         handleSort={handleSort}
+        user={user}
       />
     );
   }

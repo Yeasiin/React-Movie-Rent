@@ -2,13 +2,15 @@ import React from "react";
 import TableHeader from "./tableHeader";
 import TableBody from "./tableBody";
 
-const Table = ({columns,
-    data,
-    sortColumn,
-    handleSort,
-    handleLike,
-    handleDelete}) => {
-
+const Table = ({
+  columns,
+  data,
+  sortColumn,
+  handleSort,
+  handleLike,
+  handleDelete,
+  user,
+}) => {
   return (
     <table className="table">
       <TableHeader
@@ -18,6 +20,7 @@ const Table = ({columns,
       />
       <TableBody
         data={data}
+        user={user}
         handleLike={handleLike}
         handleDelete={handleDelete}
       />
